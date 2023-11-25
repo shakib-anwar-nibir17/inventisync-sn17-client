@@ -1,8 +1,10 @@
 import { useForm } from "react-hook-form";
 import image from "../../assets/signup.png";
 import { Link } from "react-router-dom";
+import useAuth from "../../Hooks/useAuth";
 
 const Login = () => {
+  const { userSignIn } = useAuth();
   const {
     register,
     handleSubmit,
@@ -11,6 +13,9 @@ const Login = () => {
 
   const onSubmit = (data) => {
     console.log(data);
+    userSignIn(data.email, data.password)
+      .then((result) => console.log(result))
+      .catch((error) => console.error(error));
   };
   return (
     <div className="flex justify-center items-center">

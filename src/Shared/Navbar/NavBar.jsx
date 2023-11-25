@@ -1,8 +1,16 @@
 import { Link, NavLink } from "react-router-dom";
 import logo from "../../assets/inventory2.png";
 import defaultUserPic from "../../assets/profile.png";
+import useAuth from "../../Hooks/useAuth";
 
 const Navbar = () => {
+  const { user, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout()
+      .then((result) => console.log(result))
+      .catch((error) => console.error(error));
+  };
   const navLinks = (
     <>
       <li>
@@ -17,30 +25,34 @@ const Navbar = () => {
           HOME
         </NavLink>
       </li>
-      <li>
-        <NavLink
-          to="/login"
-          className={({ isActive }) =>
-            isActive
-              ? "text-white bg-black lg:p-4 border-2 border-black"
-              : "border-2 border-black  hover:bg-black lg:p-4 hover:text-white"
-          }
-        >
-          LOGIN
-        </NavLink>
-      </li>
-      <li>
-        <NavLink
-          to="/register"
-          className={({ isActive }) =>
-            isActive
-              ? "text-white bg-black lg:p-4 border-2 border-black"
-              : "border-2 border-black  hover:bg-black lg:p-4 hover:text-white"
-          }
-        >
-          REGISTER
-        </NavLink>
-      </li>
+      {!user?.email && (
+        <>
+          <li>
+            <NavLink
+              to="/login"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-white bg-black lg:p-4 border-2 border-black"
+                  : "border-2 border-black  hover:bg-black lg:p-4 hover:text-white"
+              }
+            >
+              LOGIN
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/register"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-white bg-black lg:p-4 border-2 border-black"
+                  : "border-2 border-black  hover:bg-black lg:p-4 hover:text-white"
+              }
+            >
+              REGISTER
+            </NavLink>
+          </li>
+        </>
+      )}
       <li>
         <NavLink
           to="/create-shop"
@@ -65,21 +77,32 @@ const Navbar = () => {
         </Link>
       </li>
       <div>
-        <Link to="/dashboard/cart">
-          <button className="flex justify-center items-center">Btn</button>
-        </Link>
+        {user?.email && (
+          <button
+            onClick={handleLogout}
+            className="p-4 bg-custom-main2 text-white font-white"
+          >
+            Log Out
+          </button>
+        )}
       </div>
       <div>
-        <Link to="/login">
-          <button className=" text-black underline">Sign In</button>
-        </Link>
+        {user?.email && <p className="underline">{user.displayName}</p>}
       </div>
       <div className="h-[50px] w-[55px] rounded-full border-2 border-black">
-        <img
-          className="h-full w-full rounded-full"
-          src={defaultUserPic}
-          alt="user-pic"
-        />
+        {user?.photoURL ? (
+          <img
+            className="h-full w-full rounded-full"
+            src={user.photoURL}
+            alt="user-pic"
+          />
+        ) : (
+          <img
+            className="h-full w-full rounded-full"
+            src={defaultUserPic}
+            alt="user-pic"
+          />
+        )}
       </div>
     </>
   );

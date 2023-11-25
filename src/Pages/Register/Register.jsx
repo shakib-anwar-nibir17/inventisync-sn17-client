@@ -2,11 +2,13 @@ import { useForm } from "react-hook-form";
 import image from "../../assets/signup.png";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import useAuth from "../../Hooks/useAuth";
 
 const image_hosting_key = import.meta.env.VITE_IMGBB_API;
 const image_hosting_url = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const Register = () => {
+  const { createUser, handleUpdateProfile } = useAuth();
   const {
     register,
     handleSubmit,
@@ -20,6 +22,20 @@ const Register = () => {
       imageFile.append("image", data.image[0]);
       const response = await axios.post(image_hosting_url, imageFile);
       console.log(response.data);
+      const image = response.data.data.display_url;
+      console.log(image);
+      if (response.data.success) {
+        createUser(data.email, data.password)
+          .then((res) => {
+            console.log(res);
+            handleUpdateProfile(data.name, image)
+              .then((res) => {
+                console.log(res);
+              })
+              .catch((err) => console.log(err));
+          })
+          .catch((err) => console.log(err));
+      }
     } catch (error) {
       console.error("Error during image upload:", error);
     }
@@ -103,14 +119,14 @@ const Register = () => {
             <input
               className="btn bg-custom-main2 text-white font-semibold hover:bg-custom-main2"
               type="submit"
-              value="Login"
+              value="Register"
             />
           </div>
           <p className="text-black mt-4 text-center ">
-            Do not have an Account?
+            Already have an Account?
             <Link to="/login">
               <span className="font-bold ml-2 text-custom-main2">
-                Register Here
+                Login Here
               </span>
             </Link>
           </p>
