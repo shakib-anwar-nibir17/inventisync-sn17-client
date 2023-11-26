@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import useAuth from "../../Hooks/useAuth";
 import useAxiosManager from "../../Hooks/useAxiosManager";
+import Swal from "sweetalert2";
 
 const image_hosting_key = import.meta.env.VITE_IMGBB_API;
 const image_hosting_url = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -40,7 +41,11 @@ const Register = () => {
                 axiosManager.post("/users", userInfo).then((res) => {
                   console.log(res.data);
                   if (res.data.insertedId > 0) {
-                    // notification
+                    Swal.fire({
+                      title: "Congrats",
+                      text: "Your Registration complete",
+                      icon: "success",
+                    });
                   }
                 });
                 navigate("/create-shop");

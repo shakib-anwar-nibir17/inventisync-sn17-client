@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import image from "../../assets/signup.png";
 import { Link } from "react-router-dom";
 import useAuth from "../../Hooks/useAuth";
+import Swal from "sweetalert2";
 
 const Login = () => {
   const { userSignIn } = useAuth();
@@ -14,7 +15,14 @@ const Login = () => {
   const onSubmit = (data) => {
     console.log(data);
     userSignIn(data.email, data.password)
-      .then((result) => console.log(result))
+      .then((result) => {
+        console.log(result);
+        Swal.fire({
+          title: "Congrats",
+          text: "Login Successful",
+          icon: "success",
+        });
+      })
       .catch((error) => console.error(error));
   };
   return (
