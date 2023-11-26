@@ -40,7 +40,7 @@ const Register = () => {
                 };
                 axiosManager.post("/users", userInfo).then((res) => {
                   console.log(res.data);
-                  if (res.data.insertedId > 0) {
+                  if (res.data.insertedId) {
                     Swal.fire({
                       title: "Congrats",
                       text: "Your Registration complete",
