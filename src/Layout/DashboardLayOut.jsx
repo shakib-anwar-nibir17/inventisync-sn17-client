@@ -17,7 +17,7 @@ const Dashboard = () => {
             <ManagerDashMenu></ManagerDashMenu>
           </div>
         </div>
-        <div className="flex-1 bg-[#F6F6F6]">
+        <div className="flex-1">
           <Outlet></Outlet>
         </div>
       </div>

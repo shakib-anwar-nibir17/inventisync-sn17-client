@@ -4,7 +4,6 @@ import useClient from "../../../Hooks/useClient";
 const ManagerDashMenu = () => {
   const [client] = useClient();
   const shopOwner = client[0];
-  console.log(shopOwner);
   const navLinks = (
     <>
       <div className="w-[80px] h-[80] mx-auto">

@@ -6,6 +6,7 @@ import Register from "../Pages/Register/Register";
 import CreateShop from "../Pages/CreateShop/CreateShop";
 import DashboardLayOut from "../Layout/DashboardLayOut";
 import ManagerHome from "../Pages/DashBoard/ManagerHome/ManagerHome";
+import AddProducts from "../Pages/AddProducts/AddProducts";
 
 const Routes = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ const Routes = createBrowserRouter([
       {
         path: "manager-home",
         element: <ManagerHome></ManagerHome>,
+      },
+      {
+        path: "add-products",
+        element: <AddProducts></AddProducts>,
       },
     ],
   },
