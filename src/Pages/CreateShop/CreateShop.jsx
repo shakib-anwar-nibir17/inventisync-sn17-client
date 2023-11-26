@@ -3,15 +3,18 @@ import useClient from "../../Hooks/useClient";
 import useAxiosManager from "../../Hooks/useAxiosManager";
 import useAuth from "../../Hooks/useAuth";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 const image_hosting_key = import.meta.env.VITE_IMGBB_API;
 const image_hosting_url = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const CreateShop = () => {
   const { user } = useAuth();
-  const [client] = useClient();
+  const [client, refetch] = useClient();
   const axiosManager = useAxiosManager();
   const shopOwner = client[0];
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -60,6 +63,8 @@ const CreateShop = () => {
                       icon: "success",
                     });
                   }
+                  navigate("/dashboard/manager-home");
+                  refetch();
                 })
                 .catch((err) => console.log(err));
             }
@@ -73,6 +78,10 @@ const CreateShop = () => {
 
   return (
     <div>
+      <Helmet>
+        <title>InventiSync | CREATE SHOP</title>
+      </Helmet>
+
       <h1 className="text-center mt-10 text-7xl">Welcome to Create Shop</h1>
       <div className="w-3/4 mx-auto shadow-xl px-6 py-6">
         <form onSubmit={handleSubmit}>
