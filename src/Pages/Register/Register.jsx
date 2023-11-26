@@ -1,14 +1,17 @@
 import { useForm } from "react-hook-form";
 import image from "../../assets/signup.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import useAuth from "../../Hooks/useAuth";
+import useAxiosManager from "../../Hooks/useAxiosManager";
 
 const image_hosting_key = import.meta.env.VITE_IMGBB_API;
 const image_hosting_url = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const Register = () => {
+  const navigate = useNavigate();
   const { createUser, handleUpdateProfile } = useAuth();
+  const axiosManager = useAxiosManager();
   const {
     register,
     handleSubmit,
@@ -29,8 +32,18 @@ const Register = () => {
           .then((res) => {
             console.log(res);
             handleUpdateProfile(data.name, image)
-              .then((res) => {
-                console.log(res);
+              .then(() => {
+                const userInfo = {
+                  name: data.name,
+                  email: data.email,
+                };
+                axiosManager.post("/users", userInfo).then((res) => {
+                  console.log(res.data);
+                  if (res.data.insertedId > 0) {
+                    // notification
+                  }
+                });
+                navigate("/create-shop");
               })
               .catch((err) => console.log(err));
           })
