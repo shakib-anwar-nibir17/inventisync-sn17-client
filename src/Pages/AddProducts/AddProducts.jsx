@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form";
 import useClient from "../../Hooks/useClient";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const image_hosting_key = import.meta.env.VITE_IMGBB_API;
 const image_hosting_url = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -10,10 +12,10 @@ const AddProducts = () => {
   const shopOwner = client[0];
   console.log(shopOwner);
   const axiosSecure = useAxiosSecure();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
 
   //handle function
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const imageFile = new FormData();
     imageFile.append("image", data.image[0]);
     // console.log(imageFile);
@@ -38,19 +40,38 @@ const AddProducts = () => {
     ).toFixed(2);
     console.log(sellingPrice);
 
-    const date = new Date();
-    console.log(date);
-    // axiosSecure.post(image_hosting_url, imageFile).then((res) => {
-    //   console.log(res.data.data);
-    // });
-    // const productData = {
-    //   email,
-    //   shop_id,
-    //   shop_name,
-    //   date: new Date(),
-    //   cost:
+    const res = await axios.post(image_hosting_url, imageFile);
+    console.log(res.data);
+    const image = res.data.data.display_url;
 
-    // };
+    const productData = {
+      date: new Date(),
+      sale_count: 0,
+      selling_price: sellingPrice,
+      details,
+      discount,
+      product_name,
+      production_cost,
+      product_location,
+      profit,
+      product_quantity,
+      image: image,
+      owner_name: shopOwner.name,
+      email: shopOwner.email,
+      shop_id: shopOwner.shop_id,
+      shop_name: shopOwner.shop_name,
+    };
+
+    const response = await axiosSecure.post("/products", productData);
+    console.log(response.data);
+    if (res.data.insertedId) {
+      reset();
+      Swal.fire({
+        title: "Congrats",
+        text: "Your Product has been added to the database",
+        icon: "success",
+      });
+    }
   };
   return (
     <div className="mt-10">
@@ -78,7 +99,7 @@ const AddProducts = () => {
             <div className="form-control w-full my-6">
               <label className="label">
                 <span className="label-text text-custom-main2 font-extrabold">
-                  Production Cost*
+                  Production Cost*(USD)
                 </span>
               </label>
               <input
@@ -116,7 +137,7 @@ const AddProducts = () => {
               <input
                 type="text"
                 placeholder="Production Location"
-                {...register("production_location", { required: true })}
+                {...register("product_location", { required: true })}
                 className="input input-bordered w-full"
               />
             </div>
