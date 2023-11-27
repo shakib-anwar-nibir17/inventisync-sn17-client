@@ -15,7 +15,6 @@ const useClient = () => {
     queryFn: async () => {
       if (user?.email) {
         const res = await axiosSecure.get(`/users/${user.email}`);
-        console.log(res.data);
         return res.data[0];
       }
     },

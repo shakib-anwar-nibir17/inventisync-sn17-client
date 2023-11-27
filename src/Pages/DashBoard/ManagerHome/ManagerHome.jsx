@@ -5,7 +5,6 @@ import { FaEdit, FaTrashAlt } from "react-icons/fa";
 const ManagerHome = () => {
   const { user } = useAuth();
   const [products] = useProducts();
-  console.log(products);
   return (
     <div>
       <h2 className="text-4xl px-4">
@@ -41,24 +40,26 @@ const ManagerHome = () => {
               </tr>
             </thead>
             <tbody>
-              {products?.map((item, index) => (
-                <tr key={item._id}>
+              {products?.map((product, index) => (
+                <tr key={product._id}>
                   <th>{index + 1}</th>
                   <td>
                     <img
                       className="w-[75px] h-[75px]"
-                      src={item.image}
+                      src={product.image}
                       alt=""
                     />
                   </td>
-                  <td>{item.product_name}</td>
-                  <td>{item.product_quantity}</td>
-                  <td>{item.sale_count}</td>
+                  <td>{product.product_name}</td>
+                  <td>{product.product_quantity}</td>
+                  <td>{product.sale_count}</td>
 
                   <td>
-                    <button className="btn bg-black ">
-                      <FaEdit className="text-white"></FaEdit>
-                    </button>
+                    <Link to={`/dashboard/update-product/${product._id}`}>
+                      <button className="btn bg-black ">
+                        <FaEdit className="text-white"></FaEdit>
+                      </button>
+                    </Link>
                   </td>
                   <td>
                     <button className="btn bg-[#B91C1C] ">

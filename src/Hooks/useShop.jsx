@@ -10,7 +10,6 @@ const useShop = () => {
     queryFn: async () => {
       if (user?.email) {
         const res = await axiosSecure.get(`/shops?email=${user.email}`);
-        console.log(res.data[0]);
         return res.data[0];
       }
     },

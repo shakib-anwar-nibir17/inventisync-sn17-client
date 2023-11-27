@@ -5,7 +5,7 @@ import useAxiosSecure from "./useAxiosSecure";
 const useProducts = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const { refetch, data: products = [] } = useQuery({
+  const { refetch, data } = useQuery({
     queryKey: ["shop", user?.email],
     queryFn: async () => {
       if (user?.email) {
@@ -14,6 +14,7 @@ const useProducts = () => {
       }
     },
   });
+  const products = Array.isArray(data) ? data : [];
   return [products, refetch];
 };
 

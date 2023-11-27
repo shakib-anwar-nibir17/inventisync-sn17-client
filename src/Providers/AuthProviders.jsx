@@ -27,7 +27,6 @@ const AuthProviders = ({ children }) => {
       if (currentUser) {
         const userInfo = { email: currentUser.email };
         axiosPublic.post("/jwt", userInfo).then((res) => {
-          console.log(res.data);
           if (res.data) {
             localStorage.setItem("access-token", res?.data?.token);
             setLoading(false);
