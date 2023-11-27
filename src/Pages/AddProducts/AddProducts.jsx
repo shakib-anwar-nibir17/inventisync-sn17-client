@@ -3,15 +3,19 @@ import useClient from "../../Hooks/useClient";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import axios from "axios";
 import Swal from "sweetalert2";
+import useShop from "../../Hooks/useShop";
+import { useNavigate } from "react-router-dom";
 
 const image_hosting_key = import.meta.env.VITE_IMGBB_API;
 const image_hosting_url = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const AddProducts = () => {
+  const navigate = useNavigate();
   const [client] = useClient();
   const shopOwner = client[0];
-  console.log(shopOwner);
   const axiosSecure = useAxiosSecure();
+  const [shop, refetch] = useShop();
+  console.log(shop?.product_count);
   const { register, handleSubmit, reset } = useForm();
 
   //handle function
@@ -21,6 +25,9 @@ const AddProducts = () => {
     // console.log(imageFile);
     // console.log(data);
     //
+    const res = await axios.post(image_hosting_url, imageFile);
+    console.log(res.data);
+    const image = res.data.data.display_url;
     const {
       details,
       discount,
@@ -39,10 +46,6 @@ const AddProducts = () => {
       totalProductionCost * (profitInt / 100)
     ).toFixed(2);
     console.log(sellingPrice);
-
-    const res = await axios.post(image_hosting_url, imageFile);
-    console.log(res.data);
-    const image = res.data.data.display_url;
 
     const productData = {
       date: new Date(),
@@ -64,13 +67,23 @@ const AddProducts = () => {
 
     const response = await axiosSecure.post("/products", productData);
     console.log(response.data);
-    if (res.data.insertedId) {
+    if (response.data.insertedId) {
       reset();
-      Swal.fire({
-        title: "Congrats",
-        text: "Your Product has been added to the database",
-        icon: "success",
-      });
+      const newProductCount = shop?.product_count - 1;
+      console.log(newProductCount);
+      axiosSecure
+        .patch(`/shop/${shopOwner.shop_id}`, {
+          product_count: newProductCount,
+        })
+        .then((res) => {
+          console.log(res);
+          refetch();
+          Swal.fire({
+            title: "Congrats",
+            text: "Your Product has been added to the database",
+            icon: "success",
+          });
+        });
     }
   };
   return (
@@ -201,11 +214,25 @@ const AddProducts = () => {
           </div>
           <div className="form-control mt-6">
             <input
+              disabled={shop?.product_count === 0}
               className="btn bg-white border-2 border-black text-black font-semibold hover:bg-black hover:text-white"
               type="submit"
               value="Add Product"
             />
           </div>
+          {shop?.product_count === 0 && (
+            // Use conditional rendering to show Swal.fire and navigate if product_count is 0
+            <>
+              {Swal.fire({
+                position: "top-end",
+                icon: "question",
+                title: "Your have reached your product limit count",
+                showConfirmButton: false,
+                timer: 1500,
+              })}
+              {navigate("/")}
+            </>
+          )}
         </form>
       </div>
     </div>
