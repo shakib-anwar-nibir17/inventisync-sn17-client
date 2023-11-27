@@ -2,9 +2,52 @@ import { Link } from "react-router-dom";
 import useAuth from "../../../Hooks/useAuth";
 import useProducts from "../../../Hooks/useProducts";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import Swal from "sweetalert2";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import useClient from "../../../Hooks/useClient";
+import useShop from "../../../Hooks/useShop";
 const ManagerHome = () => {
   const { user } = useAuth();
-  const [products] = useProducts();
+  const [products, refetch] = useProducts();
+
+  const [client] = useClient();
+  const axiosSecure = useAxiosSecure();
+  const [shop] = useShop();
+  const handleDeleteProduct = (product) => {
+    console.log(product);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#4FB5FF",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.delete(`/products/${product._id}`).then((res) => {
+          console.log(res.data);
+          if (res.data.deletedCount > 0) {
+            refetch();
+            const newProductCount = shop?.product_count + 1;
+            axiosSecure
+              .patch(`/shop/${client.shop_id}`, {
+                product_count: newProductCount,
+              })
+              .then((res) => {
+                console.log(res.data);
+                Swal.fire({
+                  title: "Deleted!",
+                  text: "Your file has been deleted.",
+                  icon: "success",
+                });
+              });
+          }
+        });
+      }
+    });
+  };
+
   return (
     <div>
       <h2 className="text-4xl px-4">
@@ -62,7 +105,10 @@ const ManagerHome = () => {
                     </Link>
                   </td>
                   <td>
-                    <button className="btn bg-[#B91C1C] ">
+                    <button
+                      onClick={() => handleDeleteProduct(product)}
+                      className="btn bg-[#B91C1C] "
+                    >
                       <FaTrashAlt className="text-white"></FaTrashAlt>
                     </button>
                   </td>

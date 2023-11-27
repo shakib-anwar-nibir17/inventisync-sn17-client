@@ -4,13 +4,13 @@ import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import axios from "axios";
 import Swal from "sweetalert2";
 import useShop from "../../Hooks/useShop";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const image_hosting_key = import.meta.env.VITE_IMGBB_API;
 const image_hosting_url = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const AddProducts = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [client] = useClient();
   console.log(client);
   const axiosSecure = useAxiosSecure();
@@ -28,18 +28,10 @@ const AddProducts = () => {
     const res = await axios.post(image_hosting_url, imageFile);
     console.log(res.data);
     const image = res.data.data.display_url;
-    const {
-      details,
-      discount,
-      product_name,
-      production_cost,
-      product_location,
-      profit,
-      product_quantity,
-    } = data;
-    const costInt = parseFloat(production_cost);
+
+    const costInt = parseFloat(data.production_cost);
     const totalProductionCost = costInt + 7.5;
-    const profitInt = parseFloat(profit);
+    const profitInt = parseFloat(data.profit);
     const sellingPrice = (
       totalProductionCost +
       totalProductionCost * (profitInt / 100)
@@ -50,13 +42,13 @@ const AddProducts = () => {
       date: new Date(),
       sale_count: 0,
       selling_price: sellingPrice,
-      details,
-      discount,
-      product_name,
-      production_cost,
-      product_location,
-      profit,
-      product_quantity,
+      details: data.details,
+      discount: data.discount,
+      product_name: data.product_name,
+      production_cost: data.production_cost,
+      product_location: data.product_location,
+      profit: data.profit,
+      product_quantity: data.product_quantity,
       image: image,
       owner_name: client.name,
       email: client.email,
@@ -69,7 +61,6 @@ const AddProducts = () => {
     if (response.data.insertedId) {
       reset();
       const newProductCount = shop?.product_count - 1;
-      console.log(newProductCount);
       axiosSecure
         .patch(`/shop/${client.shop_id}`, {
           product_count: newProductCount,
@@ -77,6 +68,7 @@ const AddProducts = () => {
         .then((res) => {
           console.log(res);
           refetch();
+          //-----------
           Swal.fire({
             title: "Congrats",
             text: "Your Product has been added to the database",
@@ -219,7 +211,7 @@ const AddProducts = () => {
               value="Add Product"
             />
           </div>
-          {shop?.product_count === 0 && (
+          {/* {shop?.product_count === 0 && (
             // Use conditional rendering to show Swal.fire and navigate if product_count is 0
             <>
               {Swal.fire({
@@ -231,7 +223,7 @@ const AddProducts = () => {
               })}
               {navigate("/")}
             </>
-          )}
+          )} */}
         </form>
       </div>
     </div>
