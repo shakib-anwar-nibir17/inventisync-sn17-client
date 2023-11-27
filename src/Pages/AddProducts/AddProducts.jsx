@@ -8,8 +8,11 @@ const image_hosting_url = `https://api.imgbb.com/1/upload?key=${image_hosting_ke
 const AddProducts = () => {
   const [client] = useClient();
   const shopOwner = client[0];
+  console.log(shopOwner);
   const axiosManager = useAxiosManager();
   const { register, handleSubmit } = useForm();
+
+  //handle function
   const onSubmit = (data) => {
     const imageFile = new FormData();
     imageFile.append("image", data.image[0]);
@@ -18,6 +21,7 @@ const AddProducts = () => {
     //
     const {
       details,
+      discount,
       product_name,
       production_cost,
       product_location,
@@ -26,12 +30,16 @@ const AddProducts = () => {
     } = data;
     console.log(data.production_cost);
     const costInt = parseFloat(production_cost);
-    console.log(costInt);
+    const totalProductionCost = costInt + 7.5;
     const profitInt = parseFloat(profit);
-    console.log(profitInt);
-    const selling_price = (costInt + 7.5 + profitInt).toFixed(2);
-    console.log(selling_price);
+    const sellingPrice = (
+      totalProductionCost +
+      totalProductionCost * (profitInt / 100)
+    ).toFixed(2);
+    console.log(sellingPrice);
 
+    const date = new Date();
+    console.log(date);
     // axiosManager.post(image_hosting_url, imageFile).then((res) => {
     //   console.log(res.data.data);
     // });

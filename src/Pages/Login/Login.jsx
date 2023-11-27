@@ -1,11 +1,12 @@
 import { useForm } from "react-hook-form";
 import image from "../../assets/signup.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../Hooks/useAuth";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet-async";
 
 const Login = () => {
+  const navigate = useNavigate();
   const { userSignIn } = useAuth();
   const {
     register,
@@ -25,6 +26,7 @@ const Login = () => {
         });
       })
       .catch((error) => console.error(error));
+    navigate("/");
   };
   return (
     <div>

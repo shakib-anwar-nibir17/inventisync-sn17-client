@@ -9,23 +9,39 @@ import {
   updateProfile,
 } from "firebase/auth";
 import app from "../Firebase/Firebase.config";
+import useAxiosManager from "../Hooks/useAxiosManager";
 
 export const AuthContext = createContext();
 const auth = getAuth(app);
 const AuthProviders = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const axiosManager = useAxiosManager();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      console.log("current user", currentUser);
-      setLoading(false);
+      console.log("current user in application", currentUser);
+      // set token
+      if (currentUser) {
+        const userInfo = { email: currentUser.email };
+        axiosManager.post("/jwt", userInfo).then((res) => {
+          console.log(res.data);
+          if (res.data) {
+            localStorage.setItem("access-token", res?.data?.token);
+            setLoading(false);
+          }
+        });
+      } else {
+        // TODO: remove token (if token stored in the client side: Local storage, caching, in memory)
+        localStorage.removeItem("access-token");
+        setLoading(false);
+      }
     });
     return () => {
       return unsubscribe();
     };
-  }, []);
+  }, [axiosManager]);
 
   const createUser = (email, password) => {
     setLoading(true);

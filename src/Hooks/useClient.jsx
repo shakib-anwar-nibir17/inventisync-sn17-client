@@ -3,19 +3,26 @@ import useAuth from "./useAuth";
 import useAxiosManager from "./useAxiosManager";
 
 const useClient = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const axiosManager = useAxiosManager();
-  const { refetch, data: client = [] } = useQuery({
+  const {
+    refetch,
+    data: client = [],
+    isPending: isClientLoading,
+  } = useQuery({
     queryKey: ["user", user?.email],
+    enabled: !loading,
     queryFn: async () => {
-      const res = await axiosManager.get(
-        `http://localhost:5000/users/${user.email}`
-      );
-      return res.data;
+      if (user?.email) {
+        const res = await axiosManager.get(
+          `http://localhost:5000/users/${user.email}`
+        );
+        return res.data;
+      }
     },
   });
 
-  return [client, refetch];
+  return [client, refetch, isClientLoading];
 };
 
 export default useClient;

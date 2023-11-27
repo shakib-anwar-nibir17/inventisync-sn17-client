@@ -2,8 +2,12 @@ import { Link, NavLink } from "react-router-dom";
 import logo from "../../assets/inventory2.png";
 import defaultUserPic from "../../assets/profile.png";
 import useAuth from "../../Hooks/useAuth";
+import useClient from "../../Hooks/useClient";
 
 const Navbar = () => {
+  const [client, , isClientLoading] = useClient();
+  const shopOwner = client[0];
+  console.log(shopOwner);
   const { user, logout } = useAuth();
 
   const handleLogout = () => {
@@ -25,6 +29,22 @@ const Navbar = () => {
           HOME
         </NavLink>
       </li>
+      {!isClientLoading && shopOwner?.role && (
+        <>
+          <li>
+            <NavLink
+              to="/dashboard/manager-home"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-white bg-black lg:p-4 border-2 border-black"
+                  : "border-2 border-black  hover:bg-black lg:p-4 hover:text-white"
+              }
+            >
+              DASHBOARD
+            </NavLink>
+          </li>
+        </>
+      )}
       {!user?.email && (
         <>
           <li>
