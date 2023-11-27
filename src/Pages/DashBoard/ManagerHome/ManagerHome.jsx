@@ -13,6 +13,8 @@ const ManagerHome = () => {
   const [client] = useClient();
   const axiosSecure = useAxiosSecure();
   const [shop] = useShop();
+
+  //------------delete product
   const handleDeleteProduct = (product) => {
     console.log(product);
     Swal.fire({
@@ -51,7 +53,7 @@ const ManagerHome = () => {
   return (
     <div>
       <h2 className="text-4xl px-4">
-        Welcome to Manager Home{" "}
+        Welcome to Manager Home
         <span className="text-custom-main2">{user?.displayName}</span>
       </h2>
       <div className="bg-white w-[70%] mx-auto p-6">

@@ -24,9 +24,9 @@ const Login = () => {
           text: "Login Successful",
           icon: "success",
         });
+        navigate("/");
       })
       .catch((error) => console.error(error));
-    navigate("/");
   };
   return (
     <div>

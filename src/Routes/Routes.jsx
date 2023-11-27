@@ -8,6 +8,8 @@ import DashboardLayOut from "../Layout/DashboardLayOut";
 import ManagerHome from "../Pages/DashBoard/ManagerHome/ManagerHome";
 import AddProducts from "../Pages/AddProducts/AddProducts";
 import UpdateProduct from "../Pages/UpdateProduct/UpdateProduct";
+import SalesCollection from "../Pages/SalesCollection/SalesCollection";
+import CheckOut from "../Pages/CheckOut/CheckOut";
 
 const Routes = createBrowserRouter([
   {
@@ -41,12 +43,22 @@ const Routes = createBrowserRouter([
         element: <ManagerHome></ManagerHome>,
       },
       {
+        path: "sales-collection",
+        element: <SalesCollection></SalesCollection>,
+      },
+      {
         path: "add-products",
         element: <AddProducts></AddProducts>,
       },
       {
         path: "update-product/:id",
         element: <UpdateProduct></UpdateProduct>,
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/products/${params.id}`),
+      },
+      {
+        path: "check-out/:id",
+        element: <CheckOut></CheckOut>,
         loader: ({ params }) =>
           fetch(`http://localhost:5000/products/${params.id}`),
       },
