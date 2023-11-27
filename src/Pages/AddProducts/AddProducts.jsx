@@ -37,7 +37,6 @@ const AddProducts = () => {
       profit,
       product_quantity,
     } = data;
-    console.log(data.production_cost);
     const costInt = parseFloat(production_cost);
     const totalProductionCost = costInt + 7.5;
     const profitInt = parseFloat(profit);

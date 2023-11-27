@@ -1,14 +1,18 @@
 import { useForm } from "react-hook-form";
 import { useLoaderData } from "react-router-dom";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import Swal from "sweetalert2";
 
 const image_hosting_key = import.meta.env.VITE_IMGBB_API;
 const image_hosting_url = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const AddProducts = () => {
   const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
   const product = useLoaderData();
   const {
+    _id,
     details,
     discount,
     product_name,
@@ -30,7 +34,40 @@ const AddProducts = () => {
         "content-type": "multipart/form-data",
       },
     });
-    console.log(res);
+    const image = res.data.data.display_url;
+    //
+    const costInt = parseFloat(data.production_cost);
+    const totalProductionCost = costInt + 7.5;
+    const profitInt = parseFloat(profit);
+    const sellingPrice = (
+      totalProductionCost +
+      totalProductionCost * (profitInt / 100)
+    ).toFixed(2);
+    const updatedProduct = {
+      details: data.details,
+      discount: data.discount,
+      product_name: data.product_name,
+      production_cost: data.production_cost,
+      product_location: data.product_location,
+      profit: data.profit,
+      product_quantity: data.product_quantity,
+      image: image,
+      selling_price: sellingPrice,
+    };
+    console.log(updatedProduct);
+    const response = await axiosSecure.put(`/products/${_id}`, updatedProduct);
+    console.log(response);
+    if (response.data.modifiedCount > 0) {
+      // show success popup
+      // reset();
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: `${data.product_name} is updated.`,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
   };
   return (
     <div className="mt-10">
@@ -149,6 +186,7 @@ const AddProducts = () => {
             <input
               {...register("image", { required: true })}
               type="file"
+              required
               className="file-input w-full border-custom-main2"
             />
           </div>
