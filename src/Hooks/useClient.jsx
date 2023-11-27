@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import useAuth from "./useAuth";
-import useAxiosManager from "./useAxiosManager";
+import useAxiosSecure from "./useAxiosSecure";
 
 const useClient = () => {
   const { user, loading } = useAuth();
-  const axiosManager = useAxiosManager();
+  const axiosSecure = useAxiosSecure();
   const {
     refetch,
     data: client = [],
@@ -14,7 +14,7 @@ const useClient = () => {
     enabled: !loading,
     queryFn: async () => {
       if (user?.email) {
-        const res = await axiosManager.get(
+        const res = await axiosSecure.get(
           `http://localhost:5000/users/${user.email}`
         );
         return res.data;

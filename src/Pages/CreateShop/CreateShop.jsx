@@ -1,10 +1,10 @@
 import axios from "axios";
 import useClient from "../../Hooks/useClient";
-import useAxiosManager from "../../Hooks/useAxiosManager";
 import useAuth from "../../Hooks/useAuth";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const image_hosting_key = import.meta.env.VITE_IMGBB_API;
 const image_hosting_url = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -12,9 +12,9 @@ const image_hosting_url = `https://api.imgbb.com/1/upload?key=${image_hosting_ke
 const CreateShop = () => {
   const { user } = useAuth();
   const [client, refetch] = useClient();
-  const axiosManager = useAxiosManager();
   const shopOwner = client[0];
   const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -42,7 +42,7 @@ const CreateShop = () => {
           details,
           product_count: 3,
         };
-        axiosManager
+        axiosSecure
           .post("/shops", shopInfo)
           .then((res) => {
             console.log(res.data);
@@ -52,7 +52,7 @@ const CreateShop = () => {
               shop_logo: logo_pic,
             };
             if (res.data.insertedId) {
-              axiosManager
+              axiosSecure
                 .put(`/users/${user.email}`, userUpdate)
                 .then((res) => {
                   console.log(res.data);

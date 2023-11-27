@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
-import useAxiosManager from "../../Hooks/useAxiosManager";
 import useClient from "../../Hooks/useClient";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const image_hosting_key = import.meta.env.VITE_IMGBB_API;
 const image_hosting_url = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -9,7 +9,7 @@ const AddProducts = () => {
   const [client] = useClient();
   const shopOwner = client[0];
   console.log(shopOwner);
-  const axiosManager = useAxiosManager();
+  const axiosSecure = useAxiosSecure();
   const { register, handleSubmit } = useForm();
 
   //handle function
@@ -40,7 +40,7 @@ const AddProducts = () => {
 
     const date = new Date();
     console.log(date);
-    // axiosManager.post(image_hosting_url, imageFile).then((res) => {
+    // axiosSecure.post(image_hosting_url, imageFile).then((res) => {
     //   console.log(res.data.data);
     // });
     // const productData = {
