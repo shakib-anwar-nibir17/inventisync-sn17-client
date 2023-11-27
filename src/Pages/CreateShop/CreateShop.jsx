@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import useManager from "../../Hooks/useManager";
 
 const image_hosting_key = import.meta.env.VITE_IMGBB_API;
 const image_hosting_url = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -12,7 +13,7 @@ const image_hosting_url = `https://api.imgbb.com/1/upload?key=${image_hosting_ke
 const CreateShop = () => {
   const { user } = useAuth();
   const [client, refetch] = useClient();
-  const shopOwner = client[0];
+  const [isManager] = useManager();
   const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
 
@@ -96,7 +97,7 @@ const CreateShop = () => {
               <input
                 type="text"
                 placeholder="Name"
-                defaultValue={shopOwner?.name}
+                defaultValue={client?.name}
                 readOnly
                 name="name"
                 required
@@ -113,7 +114,7 @@ const CreateShop = () => {
               <input
                 type="email"
                 placeholder="email"
-                defaultValue={shopOwner?.email}
+                defaultValue={client?.email}
                 readOnly
                 name="email"
                 required
@@ -178,11 +179,17 @@ const CreateShop = () => {
             ></textarea>
             <div className="form-control mt-6">
               <input
+                disabled={isManager}
                 className="btn bg-white border-2 border-black text-black font-semibold hover:bg-black hover:text-white"
                 type="submit"
                 value="Create Shop"
               />
             </div>
+            {isManager && (
+              <p className="text-red-500 mt-6">
+                Notice!! You can currently create one shop from a single Account
+              </p>
+            )}
           </div>
         </form>
       </div>

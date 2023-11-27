@@ -7,7 +7,7 @@ const useClient = () => {
   const axiosSecure = useAxiosSecure();
   const {
     refetch,
-    data: client = [],
+    data: client,
     isPending: isClientLoading,
   } = useQuery({
     queryKey: ["user", user?.email],
@@ -15,7 +15,8 @@ const useClient = () => {
     queryFn: async () => {
       if (user?.email) {
         const res = await axiosSecure.get(`/users/${user.email}`);
-        return res.data;
+        console.log(res.data);
+        return res.data[0];
       }
     },
   });

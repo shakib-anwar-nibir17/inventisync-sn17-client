@@ -12,7 +12,7 @@ const image_hosting_url = `https://api.imgbb.com/1/upload?key=${image_hosting_ke
 const AddProducts = () => {
   const navigate = useNavigate();
   const [client] = useClient();
-  const shopOwner = client[0];
+  console.log(client);
   const axiosSecure = useAxiosSecure();
   const [shop, refetch] = useShop();
   console.log(shop?.product_count);
@@ -59,10 +59,10 @@ const AddProducts = () => {
       profit,
       product_quantity,
       image: image,
-      owner_name: shopOwner.name,
-      email: shopOwner.email,
-      shop_id: shopOwner.shop_id,
-      shop_name: shopOwner.shop_name,
+      owner_name: client.name,
+      email: client.email,
+      shop_id: client.shop_id,
+      shop_name: client.shop_name,
     };
 
     const response = await axiosSecure.post("/products", productData);
@@ -72,7 +72,7 @@ const AddProducts = () => {
       const newProductCount = shop?.product_count - 1;
       console.log(newProductCount);
       axiosSecure
-        .patch(`/shop/${shopOwner.shop_id}`, {
+        .patch(`/shop/${client.shop_id}`, {
           product_count: newProductCount,
         })
         .then((res) => {

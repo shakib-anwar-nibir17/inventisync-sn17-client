@@ -3,11 +3,10 @@ import useClient from "../../../Hooks/useClient";
 
 const ManagerDashMenu = () => {
   const [client] = useClient();
-  const shopOwner = client[0];
   const navLinks = (
     <>
       <div className="w-[80px] h-[80] mx-auto">
-        <img src={shopOwner?.shop_logo} alt="" />
+        <img src={client?.shop_logo} alt="" />
       </div>
 
       <li className="pl-4 border-b-2 border-black py-4 hover:bg-black hover:text-white">
