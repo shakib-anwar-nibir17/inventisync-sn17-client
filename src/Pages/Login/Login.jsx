@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../Hooks/useAuth";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet-async";
+import SocialSingUp from "../../Components/SocialSignUp/SocialSignUp";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -85,6 +86,9 @@ const Login = () => {
                 value="Login"
               />
             </div>
+          </form>
+          <div className="lg:w-2/3">
+            <SocialSingUp></SocialSingUp>
             <p className="text-black mt-4 text-center ">
               Do not have an Account?
               <Link to="/register">
@@ -93,7 +97,7 @@ const Login = () => {
                 </span>
               </Link>
             </p>
-          </form>
+          </div>
         </div>
       </div>
     </div>

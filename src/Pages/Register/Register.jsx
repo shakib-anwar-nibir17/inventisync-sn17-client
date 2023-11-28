@@ -6,7 +6,8 @@ import useAuth from "../../Hooks/useAuth";
 import Swal from "sweetalert2";
 import useClient from "../../Hooks/useClient";
 import { Helmet } from "react-helmet-async";
-import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import SocialSingUp from "../../Components/SocialSignUp/SocialSignUp";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
 const image_hosting_key = import.meta.env.VITE_IMGBB_API;
 const image_hosting_url = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
@@ -14,7 +15,7 @@ const Register = () => {
   const [refetch] = useClient();
   const navigate = useNavigate();
   const { createUser, handleUpdateProfile } = useAuth();
-  const axiosSecure = useAxiosSecure();
+  const axiosPublic = useAxiosPublic();
   const {
     register,
     handleSubmit,
@@ -40,7 +41,7 @@ const Register = () => {
                   name: data.name,
                   email: data.email,
                 };
-                axiosSecure.post("/users", userInfo).then((res) => {
+                axiosPublic.post("/users", userInfo).then((res) => {
                   console.log(res.data);
                   if (res.data.insertedId) {
                     Swal.fire({
@@ -147,6 +148,9 @@ const Register = () => {
                 value="Register"
               />
             </div>
+          </form>
+          <div className="lg:w-2/3">
+            <SocialSingUp></SocialSingUp>
             <p className="text-black mt-4 text-center ">
               Already have an Account?
               <Link to="/login">
@@ -155,7 +159,7 @@ const Register = () => {
                 </span>
               </Link>
             </p>
-          </form>
+          </div>
         </div>
       </div>
     </div>
