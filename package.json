@@ -12,7 +12,11 @@
   "dependencies": {
     "@tanstack/react-query": "^5.8.7",
     "axios": "^1.6.2",
+    "dom-to-image": "^2.6.0",
     "firebase": "^10.6.0",
+    "html2canvas": "^1.4.1",
+    "js-html2pdf": "^1.1.4",
+    "jspdf": "^2.5.1",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
     "moment": "^2.29.4",
@@ -23,6 +27,7 @@
     "react-hook-form": "^7.48.2",
     "react-icons": "^4.12.0",
     "react-router-dom": "^6.20.0",
+    "react-to-print": "^2.14.15",
     "sort-by": "^1.2.0",
     "sweetalert2": "^11.10.1"
   },

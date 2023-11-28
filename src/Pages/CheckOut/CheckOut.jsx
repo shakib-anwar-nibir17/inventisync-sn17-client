@@ -2,11 +2,30 @@ import { useLoaderData } from "react-router-dom";
 import useShop from "../../Hooks/useShop";
 import { FaEnvelope, FaHome, FaSearchLocation } from "react-icons/fa";
 import moment from "moment";
+import { useRef } from "react";
+import { useReactToPrint } from "react-to-print";
+import Html2Pdf from "js-html2pdf";
 
 const CheckOut = () => {
   const product = useLoaderData();
   const [shops] = useShop();
-  console.log(shops);
+  const invoice = useRef();
+
+  const handlePrint = useReactToPrint({
+    onPrintError: (error) => console.log(error),
+    content: () => invoice.current,
+    removeAfterPrint: true,
+    print: async (printIframe) => {
+      const document = printIframe.contentDocument;
+      if (document) {
+        const html = document.getElementsByTagName("html")[0];
+        console.log(html);
+        const exporter = new Html2Pdf(html);
+        await exporter.getPdf(true);
+      }
+    },
+  });
+
   const date = moment().format("dddd, MMMM Do YYYY, h:mm a");
   const {
     selling_price,
@@ -18,14 +37,18 @@ const CheckOut = () => {
     profit,
     product_quantity,
   } = product;
+
+  const handleClick = () => {
+    handlePrint();
+  };
+
   return (
     <div className="mt-10">
       <div className="w-[70%] mx-auto border-2 border-black py-10 px-16">
         <h1 className="text-center text-3xl font-bold mb-10">
-          ChecK Out Page for{" "}
-          <span className="text-custom-main2">{product_name}</span>
+          ChecK Out Page for <span className="text-black">{product_name}</span>
         </h1>
-        <div className="border-2 border-custom-main px-4 py-6">
+        <div ref={invoice} className="border-2 border-black px-4 py-6">
           <div className="flex justify-between items-center">
             <div className="w-[125px] h-[125px]">
               <img src={shops?.logo_pic} alt="" />
@@ -36,7 +59,7 @@ const CheckOut = () => {
             </div>
           </div>
           {/* ------------------------------- */}
-          <div className="mt-24 space-y-2">
+          <div className="mt-10 space-y-2">
             <h1 className="font-bold text-2xl">Shop Info</h1>
             <p className="flex gap-2">
               <span className="font-bold flex space-x-2 items-center">
@@ -58,7 +81,7 @@ const CheckOut = () => {
             </p>
           </div>
           {/* ------------------------------- */}
-          <div className="mt-24 space-y-3">
+          <div className="mt-10 space-y-3">
             <h1 className="font-bold text-3xl">Product Information</h1>
             <p className="text-xl">
               <span className="font-bold">Product Id:</span> {product._id}
@@ -87,40 +110,43 @@ const CheckOut = () => {
           </div>
           {/* ------------------------------- */}
           <div className="flex justify-end">
-            <div className="mt-24 w-[400px] border-2 border-black py-6 px-4">
+            <div className="mt-10 w-[400px] border-2 border-black py-6 px-4">
               <p className="text-xl">
                 <span className="font-bold">Production Cost:</span>{" "}
-                <span className="text-custom-main2 font-bold">
-                  {production_cost}
+                <span className="text-black font-bold">
+                  {production_cost}.00
                 </span>
                 USD
               </p>
               <p className="text-xl">
                 <span className="font-bold mr-4">TAX(%):</span>
-                <span className="text-custom-main2 font-bold">7.5</span>
+                <span className="text-black font-bold">7.5</span>
               </p>
               <p className="text-xl">
                 <span className="font-bold mr-4">Profit(%):</span>
-                <span className="text-custom-main2 font-bold">{profit}</span>
+                <span className="text-black font-bold">{profit}</span>
               </p>
               <p className="text-xl">
                 <span className="font-bold mr-4">Discount(%):</span>
-                <span className="text-custom-main2 font-bold">{discount}</span>
+                <span className="text-black font-bold">{discount}</span>
               </p>
               <p className="text-xl">
                 <span className="font-bold mr-4">Selling Price:</span>
-                <span className="text-custom-main2 font-bold">
+                <span className="text-black font-bold">
                   {selling_price} USD
                 </span>
               </p>
             </div>
           </div>
-          {/* ------------------------------- */}
-          <div className="flex justify-center">
-            <button className="mt-24 p-4 bg-custom-main hover:bg-custom-main2 hover:text-white font-bold">
-              GET PAID
-            </button>
-          </div>
+        </div>
+        {/* ------------------------------- */}
+        <div className="flex justify-center">
+          <button
+            onClick={handleClick}
+            className="mt-10 p-4 bg-custom-main hover:bg-black hover:text-white font-bold"
+          >
+            GET PAID
+          </button>
         </div>
       </div>
     </div>
