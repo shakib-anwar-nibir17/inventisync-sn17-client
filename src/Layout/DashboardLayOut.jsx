@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import ManagerDashMenu from "../Pages/DashBoard/ManagerDashMenu/ManagerDashMenu";
+import Footer from "../Shared/Footer/Footer";
 
 const Dashboard = () => {
   return (
@@ -17,6 +18,7 @@ const Dashboard = () => {
           <Outlet></Outlet>
         </div>
       </div>
+      <Footer></Footer>
     </div>
   );
 };
