@@ -123,7 +123,8 @@ const AddProducts = () => {
                 </span>
               </label>
               <input
-                type="text"
+                type="number"
+                min={0}
                 placeholder="Product Quantity"
                 {...register("product_quantity", { required: true })}
                 required

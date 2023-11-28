@@ -1,16 +1,19 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import useShop from "../../Hooks/useShop";
 import { FaEnvelope, FaHome, FaSearchLocation } from "react-icons/fa";
 import moment from "moment";
 import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import Html2Pdf from "js-html2pdf";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import Swal from "sweetalert2";
 
 const CheckOut = () => {
   const product = useLoaderData();
   const [shops] = useShop();
   const invoice = useRef();
-
+  const axiosSecure = useAxiosSecure();
+  const navigate = useNavigate();
   const handlePrint = useReactToPrint({
     onPrintError: (error) => console.log(error),
     content: () => invoice.current,
@@ -26,8 +29,9 @@ const CheckOut = () => {
     },
   });
 
-  const date = moment().format("dddd, MMMM Do YYYY, h:mm a");
+  const dateToday = moment().format("dddd, MMMM Do YYYY, h:mm a");
   const {
+    _id,
     selling_price,
     details,
     discount,
@@ -36,10 +40,50 @@ const CheckOut = () => {
     product_location,
     profit,
     product_quantity,
+    sale_count,
+    email,
+    shop_name,
   } = product;
 
+  const finalSellPrice =
+    selling_price - selling_price * (parseFloat(discount) / 100);
+
   const handleClick = () => {
-    handlePrint();
+    const summary = {
+      product_id: _id,
+      selling_price,
+      discount,
+      product_name,
+      production_cost,
+      profit,
+      product_quantity,
+      income: finalSellPrice,
+      dateToday,
+      email,
+      shop_name,
+    };
+    axiosSecure.post("/sales", summary).then((res) => {
+      console.log(res.data);
+      if (res.data.insertedId) {
+        axiosSecure
+          .patch(`/patch/products/${_id}`, {
+            product_quantity: product_quantity - 1,
+            sale_count: sale_count + 1,
+          })
+          .then((res) => {
+            console.log(res);
+            //-----------
+            Swal.fire({
+              title: "Congrats",
+              text: "Sale Query has been generated",
+              icon: "success",
+            });
+            handlePrint();
+            //
+            navigate("/");
+          });
+      }
+    });
   };
 
   return (
@@ -59,7 +103,7 @@ const CheckOut = () => {
             </div>
           </div>
           {/* ------------------------------- */}
-          <div className="mt-10 space-y-2">
+          <div className="mt-6 space-y-2">
             <h1 className="font-bold text-2xl">Shop Info</h1>
             <p className="flex gap-2">
               <span className="font-bold flex space-x-2 items-center">
@@ -81,17 +125,17 @@ const CheckOut = () => {
             </p>
           </div>
           {/* ------------------------------- */}
-          <div className="mt-10 space-y-3">
+          <div className="mt-6 space-y-3">
             <h1 className="font-bold text-3xl">Product Information</h1>
             <p className="text-xl">
-              <span className="font-bold">Product Id:</span> {product._id}
+              <span className="font-bold">Product Id:</span> {_id}
             </p>
             <p className="text-xl">
               <span className="font-bold">Product Name:</span> {product_name}
             </p>
             <p className="text-xl">
               <span className="font-bold">Sell Time: </span>
-              {date}
+              {dateToday}
             </p>
             <p className="text-xl">
               <span className="font-bold">Name:</span> {product_name}
@@ -110,7 +154,7 @@ const CheckOut = () => {
           </div>
           {/* ------------------------------- */}
           <div className="flex justify-end">
-            <div className="mt-10 w-[400px] border-2 border-black py-6 px-4">
+            <div className="mt-6 w-[400px] border-2 border-black py-6 px-4">
               <p className="text-xl">
                 <span className="font-bold">Production Cost:</span>{" "}
                 <span className="text-black font-bold">
@@ -134,6 +178,12 @@ const CheckOut = () => {
                 <span className="font-bold mr-4">Selling Price:</span>
                 <span className="text-black font-bold">
                   {selling_price} USD
+                </span>
+              </p>
+              <p className="text-xl">
+                <span className="font-bold mr-4">Final Price:</span>
+                <span className="text-black font-bold">
+                  {finalSellPrice} USD
                 </span>
               </p>
             </div>
