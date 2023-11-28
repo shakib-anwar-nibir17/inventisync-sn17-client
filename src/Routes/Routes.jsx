@@ -12,6 +12,7 @@ import SalesCollection from "../Pages/SalesCollection/SalesCollection";
 import CheckOut from "../Pages/CheckOut/CheckOut";
 import SalesSummary from "../Pages/SalesSummary/SalesSummary";
 import ManagerRoute from "./ManagerRoute";
+import Subscription from "../Pages/Subscription/Subscription";
 
 const Routes = createBrowserRouter([
   {
@@ -53,6 +54,14 @@ const Routes = createBrowserRouter([
         element: (
           <ManagerRoute>
             <SalesCollection></SalesCollection>
+          </ManagerRoute>
+        ),
+      },
+      {
+        path: "subscription",
+        element: (
+          <ManagerRoute>
+            <Subscription></Subscription>
           </ManagerRoute>
         ),
       },
