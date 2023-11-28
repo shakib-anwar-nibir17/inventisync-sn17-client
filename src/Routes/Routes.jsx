@@ -10,6 +10,8 @@ import AddProducts from "../Pages/AddProducts/AddProducts";
 import UpdateProduct from "../Pages/UpdateProduct/UpdateProduct";
 import SalesCollection from "../Pages/SalesCollection/SalesCollection";
 import CheckOut from "../Pages/CheckOut/CheckOut";
+import SalesSummary from "../Pages/SalesSummary/SalesSummary";
+import ManagerRoute from "./ManagerRoute";
 
 const Routes = createBrowserRouter([
   {
@@ -40,25 +42,53 @@ const Routes = createBrowserRouter([
     children: [
       {
         path: "manager-home",
-        element: <ManagerHome></ManagerHome>,
+        element: (
+          <ManagerRoute>
+            <ManagerHome></ManagerHome>
+          </ManagerRoute>
+        ),
       },
       {
         path: "sales-collection",
-        element: <SalesCollection></SalesCollection>,
+        element: (
+          <ManagerRoute>
+            <SalesCollection></SalesCollection>
+          </ManagerRoute>
+        ),
+      },
+      {
+        path: "sales-summary",
+        element: (
+          <ManagerRoute>
+            <SalesSummary></SalesSummary>
+          </ManagerRoute>
+        ),
       },
       {
         path: "add-products",
-        element: <AddProducts></AddProducts>,
+        element: (
+          <ManagerRoute>
+            <AddProducts></AddProducts>
+          </ManagerRoute>
+        ),
       },
       {
         path: "update-product/:id",
-        element: <UpdateProduct></UpdateProduct>,
+        element: (
+          <ManagerRoute>
+            <UpdateProduct></UpdateProduct>
+          </ManagerRoute>
+        ),
         loader: ({ params }) =>
           fetch(`http://localhost:5000/products/${params.id}`),
       },
       {
         path: "check-out/:id",
-        element: <CheckOut></CheckOut>,
+        element: (
+          <ManagerRoute>
+            <CheckOut></CheckOut>
+          </ManagerRoute>
+        ),
         loader: ({ params }) =>
           fetch(`http://localhost:5000/products/${params.id}`),
       },

@@ -55,7 +55,7 @@ const ManagerHome = () => {
     <div>
       <h2 className="text-4xl px-4">
         Welcome to Manager Home
-        <span className="text-custom-main2">{user?.displayName}</span>
+        <span className="text-custom-main2 ml-2">{user?.displayName}</span>
       </h2>
       <div className="bg-white w-[70%] mx-auto p-6">
         <div>

@@ -38,6 +38,14 @@ const ManagerDashMenu = () => {
       </li>
       <li className="pl-4 border-b-2 border-black py-4 hover:bg-black hover:text-white">
         <NavLink
+          to="/dashboard/sales-summary"
+          className={({ isActive }) => (isActive ? "text-white" : "")}
+        >
+          SALES SUMMARY
+        </NavLink>
+      </li>
+      <li className="pl-4 border-b-2 border-black py-4 hover:bg-black hover:text-white">
+        <NavLink
           to="/"
           className={({ isActive }) => (isActive ? "text-white" : "")}
         >

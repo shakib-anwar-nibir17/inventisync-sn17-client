@@ -80,7 +80,7 @@ const CheckOut = () => {
             });
             handlePrint();
             //
-            navigate("/");
+            navigate("/dashboard/sales-summary");
           });
       }
     });
