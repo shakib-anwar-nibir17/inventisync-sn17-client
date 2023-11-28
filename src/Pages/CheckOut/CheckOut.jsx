@@ -1,15 +1,14 @@
 import { useLoaderData } from "react-router-dom";
 import useShop from "../../Hooks/useShop";
-import { FaHome } from "react-icons/fa";
+import { FaEnvelope, FaHome, FaSearchLocation } from "react-icons/fa";
+import moment from "moment";
 
 const CheckOut = () => {
   const product = useLoaderData();
-  const [shop] = useShop();
-  console.log(shop);
+  const [shops] = useShop();
+  console.log(shops);
+  const date = moment().format("dddd, MMMM Do YYYY, h:mm a");
   const {
-    _id,
-    date,
-    sale_count,
     selling_price,
     details,
     discount,
@@ -18,11 +17,6 @@ const CheckOut = () => {
     product_location,
     profit,
     product_quantity,
-    image,
-    owner_name,
-    email,
-    shop_id,
-    shop_name,
   } = product;
   return (
     <div className="mt-10">
@@ -34,31 +28,98 @@ const CheckOut = () => {
         <div className="border-2 border-custom-main px-4 py-6">
           <div className="flex justify-between items-center">
             <div className="w-[125px] h-[125px]">
-              <img src={shop?.logo_pic} alt="" />
+              <img src={shops?.logo_pic} alt="" />
             </div>
             <div className="text-5xl font-bold">
               <h1 className="text-xl">Invoice...........</h1>
-              <h1>{shop.shop_name}</h1>
+              <h1>{shops?.shop_name}</h1>
             </div>
           </div>
           {/* ------------------------------- */}
-          <div className="mt-24">
+          <div className="mt-24 space-y-2">
             <h1 className="font-bold text-2xl">Shop Info</h1>
             <p className="flex gap-2">
               <span className="font-bold flex space-x-2 items-center">
                 <FaHome></FaHome>Name:
-              </span>{" "}
-              {shop.shop_name}
+              </span>
+              {shops?.shop_name || ""}
             </p>
             <p className="flex gap-2">
               <span className="font-bold flex space-x-2 items-center">
-                <FaHome></FaHome>Name:
-              </span>{" "}
-              {shop.shop_name}
+                <FaSearchLocation></FaSearchLocation>Location:
+              </span>
+              {shops?.location}
             </p>
-            <p>
-              <span className="font-bold">Location</span> {shop.location}
+            <p className="flex gap-2">
+              <span className="font-bold flex space-x-2 items-center">
+                <FaEnvelope></FaEnvelope>Contact:
+              </span>
+              {shops?.email}
             </p>
+          </div>
+          {/* ------------------------------- */}
+          <div className="mt-24 space-y-3">
+            <h1 className="font-bold text-3xl">Product Information</h1>
+            <p className="text-xl">
+              <span className="font-bold">Product Id:</span> {product._id}
+            </p>
+            <p className="text-xl">
+              <span className="font-bold">Product Name:</span> {product_name}
+            </p>
+            <p className="text-xl">
+              <span className="font-bold">Sell Time: </span>
+              {date}
+            </p>
+            <p className="text-xl">
+              <span className="font-bold">Name:</span> {product_name}
+            </p>
+            <p className="text-xl">
+              <span className="font-bold">Product Location:</span>{" "}
+              {product_location}
+            </p>
+            <p className="text-xl text-justify">
+              <span className="font-bold">Details:</span> {details}
+            </p>
+            <p className="text-xl text-justify">
+              <span className="font-bold">Product Available:</span>{" "}
+              {product_quantity}
+            </p>
+          </div>
+          {/* ------------------------------- */}
+          <div className="flex justify-end">
+            <div className="mt-24 w-[400px] border-2 border-black py-6 px-4">
+              <p className="text-xl">
+                <span className="font-bold">Production Cost:</span>{" "}
+                <span className="text-custom-main2 font-bold">
+                  {production_cost}
+                </span>
+                USD
+              </p>
+              <p className="text-xl">
+                <span className="font-bold mr-4">TAX(%):</span>
+                <span className="text-custom-main2 font-bold">7.5</span>
+              </p>
+              <p className="text-xl">
+                <span className="font-bold mr-4">Profit(%):</span>
+                <span className="text-custom-main2 font-bold">{profit}</span>
+              </p>
+              <p className="text-xl">
+                <span className="font-bold mr-4">Discount(%):</span>
+                <span className="text-custom-main2 font-bold">{discount}</span>
+              </p>
+              <p className="text-xl">
+                <span className="font-bold mr-4">Selling Price:</span>
+                <span className="text-custom-main2 font-bold">
+                  {selling_price} USD
+                </span>
+              </p>
+            </div>
+          </div>
+          {/* ------------------------------- */}
+          <div className="flex justify-center">
+            <button className="mt-24 p-4 bg-custom-main hover:bg-custom-main2 hover:text-white font-bold">
+              GET PAID
+            </button>
           </div>
         </div>
       </div>

@@ -6,7 +6,7 @@ const useShop = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const { refetch, data: shops } = useQuery({
-    queryKey: ["shop", user?.email],
+    queryKey: ["shops", user?.email],
     queryFn: async () => {
       if (user?.email) {
         const res = await axiosSecure.get(`/shops?email=${user.email}`);

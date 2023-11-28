@@ -12,7 +12,8 @@ const ManagerHome = () => {
 
   const [client] = useClient();
   const axiosSecure = useAxiosSecure();
-  const [shop] = useShop();
+  const [shops] = useShop();
+  console.log(shops);
 
   //------------delete product
   const handleDeleteProduct = (product) => {
@@ -31,7 +32,7 @@ const ManagerHome = () => {
           console.log(res.data);
           if (res.data.deletedCount > 0) {
             refetch();
-            const newProductCount = shop?.product_count + 1;
+            const newProductCount = shops?.product_count + 1;
             axiosSecure
               .patch(`/shop/${client.shop_id}`, {
                 product_count: newProductCount,

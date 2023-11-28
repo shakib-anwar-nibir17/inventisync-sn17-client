@@ -14,8 +14,8 @@ const AddProducts = () => {
   const [client] = useClient();
   console.log(client);
   const axiosSecure = useAxiosSecure();
-  const [shop, refetch] = useShop();
-  console.log(shop?.product_count);
+  const [shops, refetch] = useShop();
+  console.log(shops?.product_count);
   const { register, handleSubmit, reset } = useForm();
 
   //handle function
@@ -60,7 +60,7 @@ const AddProducts = () => {
     console.log(response.data);
     if (response.data.insertedId) {
       reset();
-      const newProductCount = shop?.product_count - 1;
+      const newProductCount = shops?.product_count - 1;
       axiosSecure
         .patch(`/shop/${client.shop_id}`, {
           product_count: newProductCount,
@@ -205,7 +205,7 @@ const AddProducts = () => {
           </div>
           <div className="form-control mt-6">
             <input
-              disabled={shop?.product_count === 0}
+              disabled={shops?.product_count === 0}
               className="btn bg-white border-2 border-black text-black font-semibold hover:bg-black hover:text-white"
               type="submit"
               value="Add Product"
