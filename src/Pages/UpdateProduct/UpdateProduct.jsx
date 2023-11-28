@@ -3,6 +3,7 @@ import { useLoaderData } from "react-router-dom";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet-async";
 
 const image_hosting_key = import.meta.env.VITE_IMGBB_API;
 const image_hosting_url = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -71,6 +72,9 @@ const AddProducts = () => {
   };
   return (
     <div className="mt-10">
+      <Helmet>
+        <title>InventiSync | UPDATE PRODUCT</title>
+      </Helmet>
       <div className="w-[70%] mx-auto border-2 border-black py-10 px-16">
         <h1 className="text-center text-5xl font-bold mb-10">ADD PRODUCTS</h1>
         <form onSubmit={handleSubmit(onSubmit)}>

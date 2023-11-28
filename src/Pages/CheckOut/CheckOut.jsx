@@ -7,6 +7,7 @@ import { useReactToPrint } from "react-to-print";
 import Html2Pdf from "js-html2pdf";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet-async";
 
 const CheckOut = () => {
   const product = useLoaderData();
@@ -88,6 +89,9 @@ const CheckOut = () => {
 
   return (
     <div className="mt-10">
+      <Helmet>
+        <title>InventiSync | Check Out</title>
+      </Helmet>
       <div className="w-[70%] mx-auto border-2 border-black py-10 px-16">
         <h1 className="text-center text-3xl font-bold mb-10">
           ChecK Out Page for <span className="text-black">{product_name}</span>

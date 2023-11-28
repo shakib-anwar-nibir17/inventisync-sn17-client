@@ -1,11 +1,15 @@
 import { Link } from "react-router-dom";
 import useProducts from "../../Hooks/useProducts";
 import { FaMoneyBill } from "react-icons/fa";
+import { Helmet } from "react-helmet-async";
 
 const SalesCollection = () => {
   const [products] = useProducts();
   return (
     <div>
+      <Helmet>
+        <title>InventiSync | Sales Collection</title>
+      </Helmet>
       <h2 className="text-4xl px-4">Welcome to Manager Home</h2>
       <div className="bg-white w-[90%] mx-auto p-6">
         <div>

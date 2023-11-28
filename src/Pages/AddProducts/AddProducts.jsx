@@ -4,6 +4,7 @@ import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import axios from "axios";
 import Swal from "sweetalert2";
 import useShop from "../../Hooks/useShop";
+import { Helmet } from "react-helmet-async";
 // import { useNavigate } from "react-router-dom";
 
 const image_hosting_key = import.meta.env.VITE_IMGBB_API;
@@ -79,6 +80,9 @@ const AddProducts = () => {
   };
   return (
     <div className="mt-10">
+      <Helmet>
+        <title>InventiSync | ADD PRODUCTS</title>
+      </Helmet>
       <div className="w-[70%] mx-auto border-2 border-black py-10 px-16">
         <h1 className="text-center text-5xl font-bold mb-10">ADD PRODUCTS</h1>
         <form onSubmit={handleSubmit(onSubmit)}>

@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import useClient from "../../../Hooks/useClient";
 import useShop from "../../../Hooks/useShop";
+import { Helmet } from "react-helmet-async";
 const ManagerHome = () => {
   const { user } = useAuth();
   const [products, refetch] = useProducts();
@@ -53,6 +54,9 @@ const ManagerHome = () => {
 
   return (
     <div>
+      <Helmet>
+        <title>InventiSync | Dashboard Manager</title>
+      </Helmet>
       <h2 className="text-4xl px-4">
         Welcome to Manager Home
         <span className="text-custom-main2 ml-2">{user?.displayName}</span>
