@@ -1,4 +1,9 @@
 import { Helmet } from "react-helmet-async";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import CheckOutForm from "./CheckOutForm";
+
+const stripePromise = loadStripe(import.meta.env.VITE_PAYMENT_KEY);
 
 const Subscription = () => {
   return (
@@ -36,9 +41,29 @@ const Subscription = () => {
             </ul>
           </div>
           <div>
-            <button className="py-4 px-20 border-1 border-custom-main bg-custom-main text-black font-bold">
+            <button
+              onClick={() => document.getElementById("my_modal_5").showModal()}
+              className="py-4 px-20 border-1 border-custom-main bg-custom-main text-black font-bold"
+            >
               PAY
             </button>
+            {/* Open the modal using document.getElementById('ID').showModal() method */}
+            <dialog
+              id="my_modal_5"
+              className="modal modal-bottom sm:modal-middle"
+            >
+              <div className="modal-box">
+                <Elements stripe={stripePromise}>
+                  <CheckOutForm amountPay="10"></CheckOutForm>
+                </Elements>
+                <div className="modal-action">
+                  <form method="dialog">
+                    {/* if there is a button in form, it will close the modal */}
+                    <button className="btn">Close</button>
+                  </form>
+                </div>
+              </div>
+            </dialog>
           </div>
         </div>
         {/* ---------------------------plan 2------------------------------------------------- */}
