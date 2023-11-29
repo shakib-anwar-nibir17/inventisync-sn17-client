@@ -5,9 +5,14 @@ import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { useEffect } from "react";
 import PropTypes from "prop-types";
 import useAuth from "../../Hooks/useAuth";
-const CheckOutForm = ({ amountPay }) => {
+import useClient from "../../Hooks/useClient";
+import useShop from "../../Hooks/useShop";
+import Swal from "sweetalert2";
+const CheckOutForm = ({ amountPay, countIncrease }) => {
   const stripe = useStripe();
   const elements = useElements();
+  const [client, refetch] = useClient();
+  const [shops] = useShop();
   const { user } = useAuth();
   const [clientSecret, setClientSecret] = useState("");
   const [error, setError] = useState();
@@ -69,6 +74,24 @@ const CheckOutForm = ({ amountPay }) => {
       if (paymentIntent.status === "succeeded") {
         console.log("transaction id", paymentIntent.id);
         setTransactionId(paymentIntent.id);
+        console.log(countIncrease);
+        console.log(shops?.product_count);
+        axiosSecure
+          .patch(`/shop/${client?.shop_id}`, {
+            product_count: shops?.product_count + parseInt(countIncrease),
+          })
+          .then((res) => {
+            console.log(res.data);
+            refetch();
+            //-----------
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Thank you for your subscription",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          });
       }
     }
   };
@@ -122,6 +145,7 @@ const CheckOutForm = ({ amountPay }) => {
 
 CheckOutForm.propTypes = {
   amountPay: PropTypes.string,
+  countIncrease: PropTypes.string,
 };
 
 export default CheckOutForm;

@@ -5,7 +5,6 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import useShop from "../../Hooks/useShop";
 import { Helmet } from "react-helmet-async";
-// import { useNavigate } from "react-router-dom";
 
 const image_hosting_key = import.meta.env.VITE_IMGBB_API;
 const image_hosting_url = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
