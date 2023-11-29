@@ -1,13 +1,13 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
 import useShop from "../../Hooks/useShop";
 import { FaEnvelope, FaHome, FaSearchLocation } from "react-icons/fa";
-import moment from "moment";
 import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import Html2Pdf from "js-html2pdf";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet-async";
+import moment from "moment/moment";
 
 const CheckOut = () => {
   const product = useLoaderData();
@@ -15,6 +15,7 @@ const CheckOut = () => {
   const invoice = useRef();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
+
   const handlePrint = useReactToPrint({
     onPrintError: (error) => console.log(error),
     content: () => invoice.current,
@@ -30,7 +31,16 @@ const CheckOut = () => {
     },
   });
 
-  const dateToday = moment().format("dddd, MMMM Do YYYY, h:mm a");
+  // const handlePrint = () => {
+  //   const pdf = new jsPDF();
+  //   const invoiceHtml = invoice.current;
+
+  //   pdf.fromHTML(invoiceHtml, 15, 15, { width: 50 });
+
+  //   // Save the PDF or open in a new window/tab
+  //   pdf.save("invoice.pdf");
+  // };
+
   const {
     _id,
     selling_price,
@@ -49,6 +59,8 @@ const CheckOut = () => {
   const finalSellPrice =
     selling_price - selling_price * (parseFloat(discount) / 100);
 
+  const date = moment().format("dddd, MMMM Do YYYY, h:mm a");
+
   const handleClick = () => {
     const summary = {
       product_id: _id,
@@ -59,7 +71,8 @@ const CheckOut = () => {
       profit,
       product_quantity,
       income: finalSellPrice,
-      dateToday,
+      dateToday: new Date(),
+      date,
       email,
       shop_name,
     };
@@ -72,7 +85,7 @@ const CheckOut = () => {
             sale_count: sale_count + 1,
           })
           .then((res) => {
-            console.log(res);
+            console.log(res.data);
             //-----------
             Swal.fire({
               title: "Congrats",
@@ -139,7 +152,7 @@ const CheckOut = () => {
             </p>
             <p className="text-xl">
               <span className="font-bold">Sell Time: </span>
-              {dateToday}
+              {date}
             </p>
             <p className="text-xl">
               <span className="font-bold">Name:</span> {product_name}

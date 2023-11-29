@@ -4,7 +4,6 @@ import SaleHistory from "./SaleHistory";
 
 const SalesSummary = () => {
   const [sales] = useSales();
-  console.log(sales.length);
   const totalIncome = sales
     .reduce((total, item) => total + item.income, 0)
     .toFixed(2);
@@ -13,9 +12,7 @@ const SalesSummary = () => {
     (total, product) => total + parseFloat(product.production_cost),
     0
   );
-  console.log(production_cost);
   const totalTax = 7.5 * sales.length;
-  console.log(totalTax);
   const totalInvestment = (totalTax + production_cost).toFixed(2);
   return (
     <div>

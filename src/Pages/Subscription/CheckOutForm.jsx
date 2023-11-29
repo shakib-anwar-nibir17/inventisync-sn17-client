@@ -82,6 +82,9 @@ const CheckOutForm = ({ amountPay, countIncrease }) => {
           })
           .then((res) => {
             console.log(res.data);
+            axiosSecure.patch("/admin-income", {
+              income: parseInt(countIncrease),
+            });
             refetch();
             //-----------
             Swal.fire({

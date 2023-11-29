@@ -55,7 +55,7 @@ const SaleHistory = () => {
               <div className="card h-[300px] text-black font-bold border-2 border-black">
                 <div className="card-body">
                   <h2 className="card-title">{sale.product_name}</h2>
-                  <p>DATE:{sale.dateToday} GMT+6</p>
+                  <p>DATE:{sale.date}</p>
                   {/* <p>
                   Profit:
                   {(
