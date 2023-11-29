@@ -13,6 +13,8 @@ import CheckOut from "../Pages/CheckOut/CheckOut";
 import SalesSummary from "../Pages/SalesSummary/SalesSummary";
 import ManagerRoute from "./ManagerRoute";
 import Subscription from "../Pages/Subscription/Subscription";
+import AdminHome from "../Pages/AdminHome/AdminHome";
+import AdminSummary from "../Pages/AdminSummary/AdminSummary";
 
 const Routes = createBrowserRouter([
   {
@@ -100,6 +102,14 @@ const Routes = createBrowserRouter([
         ),
         loader: ({ params }) =>
           fetch(`http://localhost:5000/products/${params.id}`),
+      },
+      {
+        path: "admin-home",
+        element: <AdminHome></AdminHome>,
+      },
+      {
+        path: "admin-summary",
+        element: <AdminSummary></AdminSummary>,
       },
     ],
   },

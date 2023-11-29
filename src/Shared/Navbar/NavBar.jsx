@@ -3,9 +3,11 @@ import logo from "../../assets/inventory2.png";
 import defaultUserPic from "../../assets/profile.png";
 import useAuth from "../../Hooks/useAuth";
 import useManager from "../../Hooks/useManager";
+import useAdmin from "../../Hooks/useAdmin";
 
 const Navbar = () => {
   const [isManager] = useManager();
+  const [isAdmin] = useAdmin();
   const { user, logout } = useAuth();
 
   const handleLogout = () => {
@@ -43,6 +45,22 @@ const Navbar = () => {
           </li>
         </>
       )}
+      {isAdmin && (
+        <>
+          <li>
+            <NavLink
+              to="/dashboard/admin-home"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-white bg-black lg:p-4 border-2 border-black"
+                  : "border-2 border-black  hover:bg-black lg:p-4 hover:text-white"
+              }
+            >
+              ADMIN DASHBOARD
+            </NavLink>
+          </li>
+        </>
+      )}
       {!user?.email && (
         <>
           <li>
@@ -71,18 +89,20 @@ const Navbar = () => {
           </li>
         </>
       )}
-      <li>
-        <NavLink
-          to="/create-shop"
-          className={({ isActive }) =>
-            isActive
-              ? "text-white bg-black lg:p-4 border-2 border-black"
-              : "border-2 border-black  hover:bg-black lg:p-4 hover:text-white"
-          }
-        >
-          CREATE SHOP
-        </NavLink>
-      </li>
+      {user?.email || isManager ? (
+        <li>
+          <NavLink
+            to="/create-shop"
+            className={({ isActive }) =>
+              isActive
+                ? "text-white bg-black lg:p-4 border-2 border-black"
+                : "border-2 border-black hover:bg-black lg:p-4 hover:text-white"
+            }
+          >
+            CREATE SHOP
+          </NavLink>
+        </li>
+      ) : null}
       <li>
         <Link
           to="https://youtu.be/rgZU5pDf6mw"

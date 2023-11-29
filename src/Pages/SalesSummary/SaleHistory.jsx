@@ -29,6 +29,8 @@ const SaleHistory = () => {
     console.log(newData);
   };
 
+  console.log(new Date());
+
   const pagination = {
     clickable: true,
     renderBullet: function (index, className) {

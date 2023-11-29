@@ -1,8 +1,13 @@
 import { Outlet } from "react-router-dom";
 import ManagerDashMenu from "../Pages/DashBoard/ManagerDashMenu/ManagerDashMenu";
 import Footer from "../Shared/Footer/Footer";
+import useManager from "../Hooks/useManager";
+import useAdmin from "../Hooks/useAdmin";
+import AdminDashMenu from "../Pages/AdminDashMenu/AdminDashMenu";
 
 const Dashboard = () => {
+  const [isManager] = useManager();
+  const [isAdmin] = useAdmin();
   return (
     <div>
       <div className="flex">
@@ -11,7 +16,8 @@ const Dashboard = () => {
             <h1 className="font-extrabold text-center">InventiSync</h1>
           </div>
           <div>
-            <ManagerDashMenu></ManagerDashMenu>
+            {isManager && <ManagerDashMenu></ManagerDashMenu>}
+            {isAdmin && <AdminDashMenu></AdminDashMenu>}
           </div>
         </div>
         <div className="flex-1">
