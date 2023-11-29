@@ -2,9 +2,25 @@ import { Link } from "react-router-dom";
 import useProducts from "../../Hooks/useProducts";
 import { FaMoneyBill } from "react-icons/fa";
 import { Helmet } from "react-helmet-async";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const SalesCollection = () => {
   const [products] = useProducts();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+
+  useEffect(() => {
+    setSearchResults(products);
+  }, [products]);
+
+  const handleSearch = () => {
+    // Filter the products array based on the product ID
+    const results = products.filter((product) =>
+      product._id.includes(searchTerm)
+    );
+    setSearchResults(results);
+  };
   return (
     <div>
       <Helmet>
@@ -13,15 +29,16 @@ const SalesCollection = () => {
       <h2 className="text-4xl px-4">Welcome to Manager Home</h2>
       <div className="bg-white w-[90%] mx-auto p-6">
         <div>
-          <div className="mt-10 border-2 border-black py-4 flex justify-between px-4">
-            <p className="text-3xl">
-              Total {products.length} Products has been Added
-            </p>
-            <Link to="/dashboard/add-products">
-              <button className="p-4 bg-custom-main font-extrabold hover:bg-custom-main2 hover:text-white">
-                Add Button
-              </button>
-            </Link>
+          <div className="mt-10 border-2 border-black py-4 flex justify-between px-8 items-center gap-20">
+            <input
+              type="search"
+              placeholder="search by id......"
+              className="input border-2 border-black input-primary w-full"
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <button className="btn btn-primary" onClick={handleSearch}>
+              Search
+            </button>
           </div>
         </div>
         {/* ______________________________table ________________ */}
@@ -41,7 +58,7 @@ const SalesCollection = () => {
               </tr>
             </thead>
             <tbody>
-              {products?.map((product, index) => (
+              {searchResults.map((product, index) => (
                 <tr key={product._id}>
                   <th>{index + 1}</th>
                   <td>{product._id}</td>
