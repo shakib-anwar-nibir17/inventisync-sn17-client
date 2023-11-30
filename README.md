@@ -1,8 +1,15 @@
-# React + Vite
+# InventiSync
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This main purpose of this website is to manage inventory.
 
-Currently, two official plugins are available:
+The Main Features of this website -
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+#### 1.Email Password and Google Registration and Sign in using Firebase
+
+#### 2. User can create a shop to add his product.
+
+#### 3.Stripe based payment method.
+
+#### 4. Mongodb was used as the database and express to handle api calls.
+
+#### 5. Admin Role
