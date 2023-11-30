@@ -33,7 +33,7 @@ const Reviews = () => {
 
   return (
     <div className="mt-20">
-      <h2 className="text-6xl text-center font-bold w-1/2 mx-auto">
+      <h2 className="text-3xl lg:text-6xl text-center font-bold lg:w-1/2 lg:mx-auto">
         HOW OUR CUSTOMER VALUES OUR EFFORTS
       </h2>
       <div className="w-3/4 mx-auto border-2 border-black mt-20 rounded-3xl">

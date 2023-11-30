@@ -5,16 +5,18 @@ const Vision = () => {
   AOS.init();
   return (
     <div className="container mx-auto mt-24">
-      <h2 className="text-7xl font-extrabold text-center mb-16">OUR VISION</h2>
+      <h2 className="text-4xl lg:text-7xl font-extrabold text-center mb-16">
+        OUR VISION
+      </h2>
       <div className="flex">
         <div
           data-aos="fade-up"
           data-aos-duration="3000"
-          className="w-1/2 bg-black text-center text-white h-[500px] flex items-center px-6 border-8
+          className="lg:w-1/2 bg-black text-center text-white h-[500px] flex items-center px-6 border-8
        border-custom-main2"
         >
           <div>
-            <h1 className="text-4xl mb-10 font-bold">
+            <h1 className="lg:text-4xl mb-10 font-bold">
               Empowering Businesses, Simplifying Operations
             </h1>
             <p className="text-xl">
@@ -33,7 +35,7 @@ const Vision = () => {
         <div
           data-aos="fade-up"
           data-aos-duration="3000"
-          className="w-1/2 bg-white text-center text-black h-[500px] flex items-center px-6 border-8
+          className="lg:w-1/2 bg-white text-center text-black h-[500px] flex items-center px-6 border-8
        border-black"
         >
           <div>
@@ -56,7 +58,7 @@ const Vision = () => {
         <div
           data-aos="fade-up"
           data-aos-duration="3000"
-          className="w-1/2 bg-black text-center text-white h-[500px] flex items-center px-6 border-8
+          className="lg:w-1/2 bg-black text-center text-white h-[500px] flex items-center px-6 border-8
        border-custom-main2"
         >
           <div>
@@ -78,7 +80,7 @@ const Vision = () => {
         <div
           data-aos="fade-up"
           data-aos-duration="3000"
-          className="w-1/2 bg-white text-center text-black h-[500px] flex items-center px-6 border-8
+          className="lg:w-1/2 bg-white text-center text-black h-[500px] flex items-center px-6 border-8
        border-black"
         >
           <div>

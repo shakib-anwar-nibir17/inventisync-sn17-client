@@ -4,13 +4,13 @@ const GetApp = () => {
   return (
     <div className="mt-20">
       <div
-        className="container mx-auto h-[200] bg-black flex py-10 rounded-[45px] items-center justify-between px-6
+        className="container mx-auto h-[200] bg-black flex flex-col lg:flex-row py-10 rounded-[45px] items-center justify-between px-6
     "
       >
-        <div className="text-white font-bold text-4xl">
+        <div className="text-white font-bold text-2xl lg:text-4xl">
           <h2>GET INVENTISYNC APP</h2>
         </div>
-        <div className="flex">
+        <div className="flex flex-col lg:flex-row">
           <img src={play} alt="" />
           <img src={app} alt="" />
         </div>
