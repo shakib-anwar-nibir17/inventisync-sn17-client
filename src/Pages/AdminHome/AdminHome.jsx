@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
 import useAuth from "../../Hooks/useAuth";
+import emailjs from "@emailjs/browser";
+import Swal from "sweetalert2";
 
 const AdminHome = () => {
   const { user } = useAuth();
@@ -16,6 +17,34 @@ const AdminHome = () => {
     });
   }, [axiosSecure]);
   console.log(allShops);
+
+  const form = useRef();
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs
+      .sendForm(
+        import.meta.env.VITE_EMAIL_SERVICE_ID,
+        import.meta.env.VITE_EMAIL_TEMPLATE,
+        form.current,
+        import.meta.env.VITE_EMAIL_KEY
+      )
+      .then(
+        (result) => {
+          console.log(result);
+          if (result.text) {
+            Swal.fire({
+              title: "NOTICE HAS BEEN SENT",
+              icon: "success",
+            });
+          }
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
+  };
   return (
     <div>
       <Helmet>
@@ -59,9 +88,49 @@ const AdminHome = () => {
                   <td>{shop.details}</td>
 
                   <td>
-                    <Link to={`/dashboard/update-product/${shop._id}`}>
-                      <button className="btn btn-error">Send</button>
-                    </Link>
+                    <button
+                      onClick={() =>
+                        document.getElementById(shop._id).showModal()
+                      }
+                      className="btn btn-error"
+                    >
+                      Send
+                    </button>
+                    <dialog id={shop._id} className="modal">
+                      <div className="modal-box">
+                        <form ref={form} method="dialog">
+                          <label>Name</label>
+                          <input
+                            className="input input-bordered w-full"
+                            type="text"
+                            defaultValue={shop.name}
+                            name="user_name"
+                          />
+                          <label>Email</label>
+                          <input
+                            className="input input-bordered w-full"
+                            type="email"
+                            defaultValue={shop.email}
+                            name="user_email"
+                          />
+                          <label>Message</label>
+                          <textarea
+                            className="input input-bordered w-full
+                          "
+                            name="message"
+                          />
+                          <input
+                            onClick={sendEmail}
+                            className="btn btn-success"
+                            type="submit"
+                            value="Send"
+                          />
+                          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                            ✕
+                          </button>
+                        </form>
+                      </div>
+                    </dialog>
                   </td>
                 </tr>
               ))}

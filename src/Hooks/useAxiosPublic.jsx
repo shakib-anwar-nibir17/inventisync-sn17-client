@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosPublic = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "https://inventory-management-server-seven.vercel.app",
 }); //creating instance
 
 const useAxiosPublic = () => {

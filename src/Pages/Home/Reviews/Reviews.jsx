@@ -25,7 +25,7 @@ const Reviews = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/reviews")
+      .get("https://inventory-management-server-seven.vercel.app/reviews")
       .then((response) => setReviews(response.data));
   }, []);
 

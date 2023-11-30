@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import useClient from "../../Hooks/useClient";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useEffect } from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -12,7 +12,8 @@ import "../SalesSummary/style/style.css";
 
 // import required modules
 import { Pagination } from "swiper/modules";
-
+import emailjs from "@emailjs/browser";
+import Swal from "sweetalert2";
 const AdminSummary = () => {
   const [client] = useClient();
   console.log(client);
@@ -39,6 +40,34 @@ const AdminSummary = () => {
     renderBullet: function (index, className) {
       return '<span class="' + className + '">' + (index + 1) + "</span>";
     },
+  };
+
+  const form = useRef();
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs
+      .sendForm(
+        import.meta.env.VITE_EMAIL_SERVICE_ID,
+        import.meta.env.VITE_EMAIL_TEMPLATE,
+        form.current,
+        import.meta.env.VITE_EMAIL_KEY
+      )
+      .then(
+        (result) => {
+          console.log(result);
+          if (result.text) {
+            Swal.fire({
+              title: "PROMO  HAS BEEN SENT",
+              icon: "success",
+            });
+          }
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
   };
   return (
     <div>
@@ -92,10 +121,50 @@ const AdminSummary = () => {
                         <p>Shop Name: {user.shop_name}</p>
                         <p>Role: {user.role}</p>
                         {user.shop_name || user.role ? null : (
-                          <button className="p-4 bg-custom-main2 text-white">
+                          <button
+                            onClick={() =>
+                              document.getElementById(user._id).showModal()
+                            }
+                            className="p-4 bg-custom-main2 text-white"
+                          >
                             SEND PROMO
                           </button>
                         )}
+                        <dialog id={user._id} className="modal">
+                          <div className="modal-box">
+                            <form ref={form} method="dialog">
+                              <label>Name</label>
+                              <input
+                                className="input input-bordered w-full"
+                                type="text"
+                                defaultValue={user.name}
+                                name="user_name"
+                              />
+                              <label>Email</label>
+                              <input
+                                className="input input-bordered w-full"
+                                type="email"
+                                defaultValue={user.email}
+                                name="user_email"
+                              />
+                              <label>Message</label>
+                              <textarea
+                                className="input input-bordered w-full
+                          "
+                                name="message"
+                              />
+                              <input
+                                onClick={sendEmail}
+                                className="btn btn-success"
+                                type="submit"
+                                value="Send"
+                              />
+                              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                                ✕
+                              </button>
+                            </form>
+                          </div>
+                        </dialog>
                       </div>
                     </div>
                   </div>

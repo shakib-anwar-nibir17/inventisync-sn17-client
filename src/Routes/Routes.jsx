@@ -91,7 +91,9 @@ const Routes = createBrowserRouter([
           </ManagerRoute>
         ),
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/products/${params.id}`),
+          fetch(
+            `https://inventory-management-server-seven.vercel.app/products/${params.id}`
+          ),
       },
       {
         path: "check-out/:id",
@@ -101,7 +103,9 @@ const Routes = createBrowserRouter([
           </ManagerRoute>
         ),
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/products/${params.id}`),
+          fetch(
+            `https://inventory-management-server-seven.vercel.app/products/${params.id}`
+          ),
       },
       {
         path: "admin-home",

@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import useShop from "../../Hooks/useShop";
 import { FaEnvelope, FaHome, FaSearchLocation } from "react-icons/fa";
 import { useRef } from "react";
@@ -13,6 +13,7 @@ const CheckOut = () => {
   const product = useLoaderData();
   const [shops] = useShop();
   const invoice = useRef();
+  const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
 
   const handlePrint = useReactToPrint({
@@ -20,10 +21,13 @@ const CheckOut = () => {
     content: () => invoice.current,
     // removeAfterPrint: true,
     // print: async (printIframe) => {
+    //   const pdf = new jsPDF();
     //   const document = printIframe.contentDocument;
     //   if (document) {
     //     const html = document.getElementsByTagName("html")[0];
     //     console.log(html);
+    //     pdf.fromHTML(html, 15, 15, { width: 50 });
+    //     pdf.save("invoice.pdf");
     //     const exporter = new Html2Pdf(html);
     //     await exporter.getPdf(true);
     //   }
@@ -91,6 +95,7 @@ const CheckOut = () => {
               text: "Sale Query has been generated",
               icon: "success",
             });
+            navigate("/dashboard/sales-collection");
             handlePrint();
             //
           });
