@@ -1,14 +1,14 @@
 import { Navigate, useLocation } from "react-router-dom";
-import useAuth from "../Hooks/useAuth";
-import useManager from "../Hooks/useManager";
 import PropTypes from "prop-types";
+import useAuth from "../Hooks/useAuth";
+import useAdmin from "../Hooks/useAdmin";
 
-const ManagerRoute = ({ children }) => {
+const AdminRoute = ({ children }) => {
   const { user, loading } = useAuth();
-  const [isManager, isManagerLoading] = useManager();
+  const [isAdmin, isAdminLoading] = useAdmin();
   const location = useLocation();
 
-  if (loading || isManagerLoading) {
+  if (loading || isAdminLoading) {
     return (
       <div className="container mx-auto min-h-screen flex justify-center">
         <div>
@@ -18,15 +18,15 @@ const ManagerRoute = ({ children }) => {
     );
   }
 
-  if (user && isManager) {
+  if (user && isAdmin) {
     return children;
   }
   return (
     <Navigate to="/forbidden" state={{ from: location }} replace></Navigate>
   );
 };
-ManagerRoute.propTypes = {
+AdminRoute.propTypes = {
   children: PropTypes.node,
 };
 
-export default ManagerRoute;
+export default AdminRoute;

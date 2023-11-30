@@ -15,11 +15,16 @@ import ManagerRoute from "./ManagerRoute";
 import Subscription from "../Pages/Subscription/Subscription";
 import AdminHome from "../Pages/AdminHome/AdminHome";
 import AdminSummary from "../Pages/AdminSummary/AdminSummary";
+import ErrorPage from "../Pages/ErrorPage/ErrorPage";
+import Forbidden from "../Pages/Forbidden/Forbidden";
+import AdminRoute from "./AdminRoute";
+import PrivateRoute from "./PrivateRoute";
 
 const Routes = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout></MainLayout>,
+    errorElement: <ErrorPage></ErrorPage>,
     children: [
       {
         path: "/",
@@ -35,7 +40,11 @@ const Routes = createBrowserRouter([
       },
       {
         path: "/create-shop",
-        element: <CreateShop></CreateShop>,
+        element: (
+          <PrivateRoute>
+            <CreateShop></CreateShop>
+          </PrivateRoute>
+        ),
       },
     ],
   },
@@ -109,13 +118,25 @@ const Routes = createBrowserRouter([
       },
       {
         path: "admin-home",
-        element: <AdminHome></AdminHome>,
+        element: (
+          <AdminRoute>
+            <AdminHome></AdminHome>
+          </AdminRoute>
+        ),
       },
       {
         path: "admin-summary",
-        element: <AdminSummary></AdminSummary>,
+        element: (
+          <AdminRoute>
+            <AdminSummary></AdminSummary>
+          </AdminRoute>
+        ),
       },
     ],
+  },
+  {
+    path: "forbidden",
+    element: <Forbidden></Forbidden>,
   },
 ]);
 

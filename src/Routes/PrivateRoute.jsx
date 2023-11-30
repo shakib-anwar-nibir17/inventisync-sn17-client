@@ -1,14 +1,12 @@
+import PropTypes from "prop-types";
 import { Navigate, useLocation } from "react-router-dom";
 import useAuth from "../Hooks/useAuth";
-import useManager from "../Hooks/useManager";
-import PropTypes from "prop-types";
 
-const ManagerRoute = ({ children }) => {
+const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
-  const [isManager, isManagerLoading] = useManager();
   const location = useLocation();
 
-  if (loading || isManagerLoading) {
+  if (loading) {
     return (
       <div className="container mx-auto min-h-screen flex justify-center">
         <div>
@@ -18,15 +16,14 @@ const ManagerRoute = ({ children }) => {
     );
   }
 
-  if (user && isManager) {
+  if (user) {
     return children;
   }
-  return (
-    <Navigate to="/forbidden" state={{ from: location }} replace></Navigate>
-  );
+  return <Navigate state={{ from: location }} replace to="/login"></Navigate>;
 };
-ManagerRoute.propTypes = {
+
+PrivateRoute.propTypes = {
   children: PropTypes.node,
 };
 
-export default ManagerRoute;
+export default PrivateRoute;
