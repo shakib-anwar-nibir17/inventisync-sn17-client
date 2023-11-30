@@ -1,7 +1,7 @@
 import banner from "../../../assets/banner.png";
 const Banner = () => {
   return (
-    <div className="bg-custom-main2 min-h-[92vh] flex flex-col items-center justify-center text-center">
+    <div className="bg-custom-main2 min-h-[92vh] flex flex-col items-center justify-center text-center ">
       <h1 className="text-7xl font-extrabold w-3/4 mx-auto">
         InventiSync Redefining Retail Rhythms, One Click at a Time!
       </h1>

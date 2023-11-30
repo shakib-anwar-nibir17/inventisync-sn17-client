@@ -1,9 +1,9 @@
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import useShop from "../../Hooks/useShop";
 import { FaEnvelope, FaHome, FaSearchLocation } from "react-icons/fa";
 import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
-import Html2Pdf from "js-html2pdf";
+
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet-async";
@@ -14,21 +14,20 @@ const CheckOut = () => {
   const [shops] = useShop();
   const invoice = useRef();
   const axiosSecure = useAxiosSecure();
-  const navigate = useNavigate();
 
   const handlePrint = useReactToPrint({
     onPrintError: (error) => console.log(error),
     content: () => invoice.current,
-    removeAfterPrint: true,
-    print: async (printIframe) => {
-      const document = printIframe.contentDocument;
-      if (document) {
-        const html = document.getElementsByTagName("html")[0];
-        console.log(html);
-        const exporter = new Html2Pdf(html);
-        await exporter.getPdf(true);
-      }
-    },
+    // removeAfterPrint: true,
+    // print: async (printIframe) => {
+    //   const document = printIframe.contentDocument;
+    //   if (document) {
+    //     const html = document.getElementsByTagName("html")[0];
+    //     console.log(html);
+    //     const exporter = new Html2Pdf(html);
+    //     await exporter.getPdf(true);
+    //   }
+    // },
   });
 
   // const handlePrint = () => {
@@ -94,7 +93,6 @@ const CheckOut = () => {
             });
             handlePrint();
             //
-            navigate("/dashboard/sales-summary");
           });
       }
     });
