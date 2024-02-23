@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import useAuth from "../../Hooks/useAuth";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
-import Swal from "sweetalert2";
 
 const SocialSingUp = () => {
   const { googleSignIn } = useAuth();
